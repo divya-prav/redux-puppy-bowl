@@ -1,4 +1,7 @@
 // Import the React library
+import React from "react";
+import '../../../src/index.css';
+import { useFetchPlayersQuery } from "../../api/puppyBowlApi";
 
 
 // Import the generated hook from our RTK Query API slice
@@ -12,16 +15,16 @@ const Players = () => {
   // Use the generated hook to fetch data from the API
   // When the component is first rendered, it will start the API fetch
   // It will re-render each time the fetch status changes (e.g., "loading", "data arrived", "error")
-  const { data = {}, error, isLoading } = useFetchPlayersQuery();
+  const { data , error, isLoading } = useFetchPlayersQuery();
 
   // Show a loading message while data is being fetched
   if (isLoading) {
-    
+     return <div>Loading...</div>
   }
 
   // Show an error message if the fetch failed
   if (error) {
-    
+     return <div>Error :{error.message}</div>
   }
 
   // Show the fetched data after it has arrived
@@ -32,16 +35,16 @@ const Players = () => {
       {/* Map through the data array and generate a div for each player */}
       {data.data.players.map((player) => (
         // Use the player's ID as the key for this div
-        <div key={player.id} className="player-card">
+        <div key={player.id} className="player-card" id="delay">
           {/* Display the player's image, with the player's name as alt text */}
-          
-          <div className="player-details">
+          <div className="player-image-container"><img className="player-image" src={player.imageUrl} alt={player.name} /></div>
+          <div className="player-details" >
             
-            <h2>  {/* Display the player's name */} </h2> 
+            <h2>  {player.name} </h2> 
             
-            <p>  {/* Display the player's breed */} </p> 
+            <p> <strong>Breed:</strong> {player.breed} </p> 
             
-            <p> {/* Display the player's status */} </p>
+            <p> <strong>Status:</strong>{player.status} </p>
           </div>
         </div>
       ))}
@@ -50,4 +53,4 @@ const Players = () => {
 };
 
 // Export the component so it can be imported and used in other files
-
+export default Players;
